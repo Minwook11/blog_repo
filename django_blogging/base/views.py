@@ -11,7 +11,6 @@ logger = logging.getLogger('django')
 
 class CaseView(View):
     def post(self, request):
-
         data = json.loads(request.body)
         name = data['name']
         code = data['code']
@@ -21,3 +20,19 @@ class CaseView(View):
         logger.info("{} {} {} 200".format(request.method, request.path, request.headers['User-Agent']))
 
         return JsonResponse({'Message' : 'Check', 'Result' : test.id}, status = 200)
+
+    def get(self, request):
+        data = Case.objects.all()
+        if not data:
+            logger.info("{} {} {} 200".format(request.method, request.path, request.headers['User-Agent']))
+
+            return JsonResponse({'Message' : 'Empty Case data'}, status = 200)
+
+        res = [ {
+            'name' : case.name,
+            'code' : case.code
+        } for case in data ]
+
+        logger.info("{} {} {} 200".format(request.method, request.path, request.headers['User-Agent']))
+
+        return JsonResponse({'Message' : 'All Case data', 'Response' : res}, status = 200)

@@ -11,15 +11,20 @@ logger = logging.getLogger('django')
 
 class CaseView(View):
     def post(self, request):
-        data = json.loads(request.body)
-        name = data['name']
-        code = data['code']
+        try:
+            data = json.loads(request.body)
+            name = data['name']
+            code = data['code']
 
-        test, flag = Case.objects.get_or_create(name = name, code = code)
+            test, flag = Case.objects.get_or_create(name = name, code = code)
 
-        logger.info("{} {} {} 200".format(request.method, request.path, request.headers['User-Agent']))
+            logger.info("{} {} {} 200".format(request.method, request.path, request.headers['User-Agent']))
 
-        return JsonResponse({'Message' : 'Check', 'Result' : test.id}, status = 200)
+            return JsonResponse({'Message' : 'Check', 'Result' : test.id}, status = 200)
+
+        except KeyError:
+            logger.warn("{} {} {} 400 : KeyError".format(request.method, request.path, request.headers['User-Agent']))
+            return JsonResponse({'Message' : 'KeyError'}, status = 400)
 
     def get(self, request):
         data = Case.objects.all()

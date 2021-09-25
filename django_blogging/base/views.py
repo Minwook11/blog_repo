@@ -2,8 +2,9 @@ import json
 import logging
 import datetime
 
-from django.views import View
-from django.http import JsonResponse
+from django.views      import View
+from django.http       import JsonResponse
+from django.core.cache import cache
 
 from .models import *
 
@@ -33,11 +34,15 @@ class CaseView(View):
 
             return JsonResponse({'Message' : 'Empty Case data'}, status = 200)
 
-        res = [ {
-            'name' : case.name,
-            'code' : case.code
-        } for case in data ]
+        all_cases = cache.get('all_cases')
+        if not all_cases:
+            temp_data = [ {
+                'name' : case.name,
+                'code' : case.code
+            } for case in data ]
+            cache.set('all_cases', temp_data)
+            all_cases = temp_data
 
         logger.info("{} {} {} 200".format(request.method, request.path, request.headers['User-Agent']))
 
-        return JsonResponse({'Message' : 'All Case data', 'Response' : res}, status = 200)
+        return JsonResponse({'Message' : 'All Case data', 'Response' : all_cases}, status = 200)

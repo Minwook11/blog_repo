@@ -130,12 +130,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 APPEND_SLASH = False
 
+# CORS setting - All Allow
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-
 CORS_ALLOW_METHODS = ( 'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS' )
 CORS_ALLOW_HEADERS = ( 'accept', 'accept-encoding', 'authorization', 'content-type', 'dnt', 'origin', 'user-agent', 'x-csrftoken', 'x-requested-with' )
 
+# Redis RAM cache setting
+CACHE = {
+    "default" : {
+        "BACKEND" : "django_redis.cache.RedisCache",
+        "LOCATION" : "redis://redis:6379/1",
+        "OPTION" : {
+            "CLIENT_CLASS" : "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+# Default Django-Logger setting
 current_time = datetime.now()
 str_time = current_time.strftime('%y-%m-%d')
 

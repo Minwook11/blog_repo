@@ -21,6 +21,14 @@ class CaseView(View):
 
             logger.info("{} {} {} 200".format(request.method, request.path, request.headers['User-Agent']))
 
+            if flag:
+                data = Case.objects.all()
+                temp_data = [ {
+                    'name' : case.name,
+                    'code' : case.code
+                } for case in data ]
+                cache.set('all_cases', temp_data)
+
             return JsonResponse({'Message' : 'Check', 'Result' : test.id}, status = 200)
 
         except KeyError:

@@ -3,6 +3,5 @@ bin/
 lib/
 pyvenv.cfg
 db.sqlite3
-manage.py
 logs/
 dump.rdb

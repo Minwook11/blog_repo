@@ -13,3 +13,15 @@ class Complex(models.Model):
     level = models.ForeignKey('Level', on_delete = models.CASCADE)
     key_1 = models.IntegerField()
     key_2 = models.IntegerField()
+
+class Product(models.Model):
+    name = models.TextField()
+    specific = models.ManyToManyField('Size', through = 'SpecificProduct', related_name = 'product_with_size')
+
+class Size(models.Model):
+    name = models.TextField()
+    weight = models.IntegerField()
+
+class SpecificProduct(models.Model):
+    product = models.ForeignKey(Product, on_delete = models.CASCADE)
+    size = models.ForeignKey(Size, on_delete = models.CASCADE)

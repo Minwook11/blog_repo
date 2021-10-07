@@ -7,4 +7,6 @@ urlpatterns = [
     path('search/size', views.SizeSearch),
     path('product/all', views.AllProduct),
     path('product/<int:product_id>', views.SelectRelatedPrac),
+    path('size/all', views.AllSize),
+    path('size', views.SizePrefetchRelatedPrac),
 ]

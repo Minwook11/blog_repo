@@ -84,9 +84,8 @@ def AllProduct(request):
 
 def SelectRelatedPrac(request, product_id):
     if request.method == 'GET':
-        target_id = product_id
 
-        temp_data = SpecificProduct.objects.select_related('product', 'size').get(id = target_id)
+        temp_data = SpecificProduct.objects.select_related('product', 'size').get(id = product_id)
         if not temp_data:
             return JsonResponse({'Message' : 'INVALID_SPECIFIC_PRODUCT_VALUE'}, status = 400)
 
@@ -97,3 +96,19 @@ def SelectRelatedPrac(request, product_id):
         }
 
         return JsonResponse({'Message' : 'Selected product specific information', 'Result' : result}, status = 200)
+
+def AllSize(request):
+    if request.method == 'GET':
+        result = [ size.id for size in Size.objects.all() ]
+
+        return JsonResponse({'Message' : 'All size ID list', 'Result' : result}, status = 200)
+
+def SizePrefetchRelatedPrac(request):
+    if request.method == 'GET':
+        temp_pr = Size.objects.prefetch_related('specificproduct_set')
+        result = [ {
+            'Size Name' : size.name,
+            'Size Weight' : size.weight
+        } for size in temp_pr ]
+
+        return JsonResponse({'Message' : 'Current used size data list', 'Result' : result}, status = 200)

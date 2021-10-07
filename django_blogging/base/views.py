@@ -54,3 +54,46 @@ class CaseView(View):
         logger.info("{} {} {} 200".format(request.method, request.path, request.headers['User-Agent']))
 
         return JsonResponse({'Message' : 'All Case data', 'Response' : all_cases}, status = 200)
+
+def SizeSearch(request):
+    if request.method == 'GET':
+        data = json.loads(request.body)
+        target_size = data['size']
+
+        size_obj = Size.objects.get(name = target_size)
+        if not size_obj:
+            return JsonResponse({'Message' : 'INVALID_INPUT'}, status = 400)
+
+        temp_data = SpecificProduct.objects.filter(size = size_obj)
+        if not temp_data:
+            return JsonResponse({'Message' : 'Empty selected size product'}, status = 200)
+
+        result = [ { 'Product Name' : product.product.name } for product in temp_data ]
+
+        return JsonResponse({'Message' : 'Size searching result', 'Result' : result}, status = 200)
+
+def AllProduct(request):
+    if request.method == 'GET':
+        temp_data = SpecificProduct.objects.all()
+        if not temp_data:
+            return JsonResponse({'Message' : 'Empty specific product table'}, status = 200)
+
+        result = [ product_info.id for product_info in temp_data ]
+
+        return JsonResponse({'Message' : 'All specific product ID list', 'Result' : result}, status = 200)
+
+def SelectRelatedPrac(request, product_id):
+    if request.method == 'GET':
+        target_id = product_id
+
+        temp_data = SpecificProduct.objects.select_related('product', 'size').get(id = target_id)
+        if not temp_data:
+            return JsonResponse({'Message' : 'INVALID_SPECIFIC_PRODUCT_VALUE'}, status = 400)
+
+        result = {
+            'Product Name' : temp_data.product.name,
+            'Product Size' : temp_data.size.name,
+            'Product Weight' : temp_data.size.weight
+        }
+
+        return JsonResponse({'Message' : 'Selected product specific information', 'Result' : result}, status = 200)

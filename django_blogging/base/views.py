@@ -135,3 +135,17 @@ def QueryStringPrac(request):
         } for i in key2_search ]
 
         return JsonResponse({'Message' : 'Selected keys result', 'Key 1 Result' : key1_result, 'Key 2 Result' : key2_result}, status = 200)
+
+def PathVariablePrac(request, complex_id):
+    if request.method == 'GET':
+        target = Complex.objects.get(id = complex_id)
+
+        result = {
+            'Complex ID' : target.id,
+            'Case' : target.case.name,
+            'Level' : target.level.level,
+            'Key 1' : target.key_1,
+            'Key 2' : target.key_2
+        }
+
+        return JsonResponse({'Message' : 'Selected Comples object information', 'Result' : result}, status = 200)

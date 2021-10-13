@@ -10,4 +10,5 @@ urlpatterns = [
     path('size/all', views.AllSize),
     path('size/FR', views.SizePrefetchRelatedPrac),
     path('complex/querystring', views.QueryStringPrac),
+    path('complex/<int:complex_id>', views.PathVariablePrac),
 ]

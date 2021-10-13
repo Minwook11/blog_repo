@@ -112,3 +112,26 @@ def SizePrefetchRelatedPrac(request):
         } for size in temp_pr ]
 
         return JsonResponse({'Message' : 'Current used size data list', 'Result' : result}, status = 200)
+
+def QueryStringPrac(request):
+    if request.method == 'GET':
+        key1_search = Complex.objects.filter(key_1 = request.GET.get('key1', 0))
+        key2_search = Complex.objects.filter(key_2 = request.GET.get('key2', 0))
+
+        key1_result = [ {
+            'Complex ID' : i.id,
+            'Case' : i.case.name,
+            'Level' : i.level.level,
+            'Key 1' : i.key_1,
+            'Key 2' : i.key_2,
+        } for i in key1_search ]
+
+        key2_result = [ {
+            'Complex ID' : i.id,
+            'Case' : i.case.name,
+            'Level' : i.level.level,
+            'Key 1' : i.key_1,
+            'Key 2' : i.key_2,
+        } for i in key2_search ]
+
+        return JsonResponse({'Message' : 'Selected keys result', 'Key 1 Result' : key1_result, 'Key 2 Result' : key2_result}, status = 200)

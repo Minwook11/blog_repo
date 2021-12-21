@@ -2,8 +2,25 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .serializers import PracticeSerializer, WritePracticeSerializer
-from .models import Practice
+from .serializers import PracticeSerializer, WritePracticeSerializer, WriteNestedSerializer, ReadNestedSerializer
+from .models import Practice, Nested
+
+@api_view(['POST', 'GET'])
+def NestedView(request):
+	if request.method == 'POST':
+		serializer_class = WriteNestedSerializer(data = request.data)
+		if serializer_class.is_valid():
+			serializer_class.save()
+			return Response(serializer_class.data, status = status.HTTP_200_OK)
+
+		else:
+			return Response(status = status.HTTP_400_BAD_REQUEST)
+
+	elif request.method == 'GET':
+		all_data = Nested.objects.all()
+		serializer_class = ReadNestedSerializer(all_data, many = True).data
+
+		return Response(serializer_class)
 
 @api_view(['GET', 'POST'])
 def PracticeView(request):

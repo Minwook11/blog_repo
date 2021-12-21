@@ -7,3 +7,8 @@ class Practice(models.Model):
 
 	def __str__(self):
 		return self.title
+
+class Nested(models.Model):
+	date = models.DateTimeField(auto_now_add = True)
+	nested_1 = models.CharField(max_length = 32)
+	prac = models.ForeignKey(Practice, on_delete = models.CASCADE)

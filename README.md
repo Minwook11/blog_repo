@@ -6,4 +6,4 @@
 
 ## 3. Django에 Redis 캐시 사용하기 21/09/27 -- https://king-minwook.tistory.com/83
 
-## 4. DRF의 Serializer 이해하기 -- 진행중
+## 4. DRF의 Serializer 기본및 느낀점 21/12/22 -- https://king-minwook.tistory.com/92

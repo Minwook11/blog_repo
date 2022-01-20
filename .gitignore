@@ -5,3 +5,4 @@ pyvenv.cfg
 db.sqlite3
 logs/
 dump.rdb
+*DS_Store*

@@ -1,14 +1,18 @@
 from django.contrib import admin
 from .models import *
 
+@admin.register(Case)
 class Registered_Case(admin.ModelAdmin):
-    list_display = ('id', 'name', 'code')
+    list_display = ['id', 'name', 'code']
 
+@admin.register(Level)
 class Registered_Level(admin.ModelAdmin):
-    list_display = ('id', 'number', 'level')
+    list_display = ['id', 'number', 'level']
+    list_filter = ['level']
 
+@admin.register(Complex)
 class Registered_Complex(admin.ModelAdmin):
-    list_display = ('id', 'get_Case', 'get_Level', 'key_1', 'key_2')
+    list_display = ['id', 'get_Case', 'get_Level', 'key_1', 'key_2']
 
     def get_Case(self, obj):
         return obj.case.name
@@ -16,14 +20,18 @@ class Registered_Complex(admin.ModelAdmin):
     def get_Level(self, obj):
         return obj.level.level
 
+@admin.register(Product)
 class Registered_Product(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ['id', 'name']
+    search_fields = ['name']
 
+@admin.register(Size)
 class Registered_Size(admin.ModelAdmin):
-    list_display = ('id', 'name', 'weight')
+    list_display = ['id', 'name', 'weight']
 
+@admin.register(SpecificProduct)
 class Registered_SpecificProduct(admin.ModelAdmin):
-    list_display = ('id', 'get_Product', 'get_Size')
+    list_display = ['id', 'get_Product', 'get_Size']
 
     def get_Product(self, obj):
         return obj.product.name
@@ -31,9 +39,3 @@ class Registered_SpecificProduct(admin.ModelAdmin):
     def get_Size(self, obj):
         return obj.size.name
 
-admin.site.register(Case, Registered_Case)
-admin.site.register(Level, Registered_Level)
-admin.site.register(Complex, Registered_Complex)
-admin.site.register(Product, Registered_Product)
-admin.site.register(Size, Registered_Size)
-admin.site.register(SpecificProduct, Registered_SpecificProduct)
